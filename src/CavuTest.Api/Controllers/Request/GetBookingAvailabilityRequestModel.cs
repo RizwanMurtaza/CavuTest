@@ -16,6 +16,8 @@ namespace CavuTest.Api.Controllers.Request
         [FromQuery(Name = "DateTo")]
         public DateTime? DateTo { get; set; }
 
+
+        // These should be separate request models 
         public BookingAvailabilityQuery ToBookingAvailabilityQuery()
         {
             return new BookingAvailabilityQuery

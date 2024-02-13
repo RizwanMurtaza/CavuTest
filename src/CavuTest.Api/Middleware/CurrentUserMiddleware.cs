@@ -14,7 +14,7 @@ public class CurrentUserMiddleware : IMiddleware
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         // This can be used If we want to setup in request pipeline 
-        // this is just an example to set the uer
+        // this is just an example to set the user
 
         _currentUserInitializer.SetCurrentUser(context.User);
 
