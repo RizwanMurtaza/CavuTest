@@ -1,0 +1,6 @@
+@CavuTest.Api_HostAddress = http://localhost:5030
+
+GET {{CavuTest.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
