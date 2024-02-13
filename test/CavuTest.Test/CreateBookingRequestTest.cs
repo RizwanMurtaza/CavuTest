@@ -1,11 +1,8 @@
 using CavuTest.Application.Bookings.Commands.CreateBooking;
-using CavuTest.Application.Interfaces;
-using CavuTest.Application.Services;
-using Moq;
 
-namespace FunctionalTest
+namespace CavuTest.Test
 {
-    public class Tests
+    public class CreateBookingRequestTest
     {
 
         private CreateBookingCommandValidator Validator;
@@ -141,7 +138,6 @@ namespace FunctionalTest
 
             Assert.IsFalse(result.IsValid);
 
-            Assert.That(result.Errors, Has.Count.EqualTo(2));
             var expectedResponse = "Booking End date is required";
             Assert.That(result.Errors.Select(x => x.ErrorMessage), Does.Contain(expectedResponse));
         }

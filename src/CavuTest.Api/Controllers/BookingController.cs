@@ -1,50 +1,63 @@
-using CavuTest.Application.Bookings.Queries.GetAll;
 using Microsoft.AspNetCore.Mvc;
 using CavuTest.Application.Bookings.Queries;
-using CavuTest.Application.Bookings.Queries.PagedBooking;
 using CavuTest.Application.Models;
-using CavuTest.Application.Bookings.Commands.CreateBooking;
 using CavuTest.Application.Bookings.Queries.GetBookingAvailability;
-using MediatR;
+using CavuTest.Api.Controllers.Request;
+using CavuTest.Application.Bookings.Commands.UpdateBooking;
+using CavuTest.Application.Bookings.Commands.DeleteBooking;
 
 namespace CavuTest.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class BookingController : ControllerBase
+    [Route("api/[controller]/[action]")]
+    public class BookingController : ApiControllerBase
     {
-        private readonly Mediator _mediator;
-
-        public BookingController(Mediator mediator)
-        {
-            _mediator = mediator;
-        }
 
         [HttpGet(Name = "GetAll")]
-        public async Task<List<BookingResponse>> Get(GetAllBookingsQuery query, CancellationToken cancellationToken)
+        public async Task<List<BookingResponse>> Get([FromQuery] GetBookingRequestModel request, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(query, cancellationToken);
+            var query = request.ToGetAllBookingsQuery();
+            var result = await Mediator.Send(query, cancellationToken);
             return result;
         }
 
-        [HttpGet(Name = "GetPaged")]
-        public async Task<PaginatedList<BookingResponse>> GetPaged(BookingsWithPaginationQuery query, CancellationToken cancellationToken)
+        [HttpGet(Name = "GetPage")]
+        public async Task<PaginatedList<BookingResponse>> GetPaged([FromQuery] GetBookingRequestModel request, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(query, cancellationToken);
+            var query = request.ToBookingsWithPaginationQuery();
+            var result = await Mediator.Send(query, cancellationToken);
             return result;
         }
 
         [HttpPost(Name = "Create")]
-        public async Task<Guid> GetPaged(CreateBookingCommandRequest command, CancellationToken cancellationToken)
+        public async Task<Guid> Create(CreateBookingRequestModel request, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(command, cancellationToken);
+            var command = request.ToCommand();
+            var result = await Mediator.Send(command, cancellationToken);
             return result;
         }
 
         [HttpGet(Name = "GetAvailability")]
-        public async Task<BookingAvailabilityResponse> GetPaged(BookingAvailabilityQuery command, CancellationToken cancellationToken)
+        public async Task<BookingAvailabilityResponse> GetAvailability([FromQuery] GetBookingRequestModel request, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(command, cancellationToken);
+            var query = request.ToBookingAvailabilityQuery();
+            var result = await Mediator.Send(query, cancellationToken);
+            return result;
+        }
+
+        [HttpPost(Name = "Update")]
+        public async Task<Guid> Update(UpdateBookingCommandRequest request, CancellationToken cancellationToken)
+        {
+            // should be request that is converted to command 
+            var result = await Mediator.Send(request, cancellationToken);
+            return result;
+        }
+
+        [HttpPost(Name = "Delete")]
+        public async Task<Guid> Delete(DeleteBookingCommandRequest request, CancellationToken cancellationToken)
+        {
+            // should be request that is converted to command 
+            var result = await Mediator.Send(request, cancellationToken);
             return result;
         }
     }

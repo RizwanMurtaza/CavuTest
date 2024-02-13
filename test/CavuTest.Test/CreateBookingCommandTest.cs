@@ -16,15 +16,9 @@ namespace CavuTest.Test
         }
 
         [Test]
-        public void Test1()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
         public async Task CreateBookingWithValidDates()
         {
-            var bookingId = Guid.NewGuid();
+            // Just an example to test the command by mocking
             this.dbContext.Setup(x =>
                 x.BookingEntities.Add(It.IsAny<BookingEntity>()));
             var bookingCommand = new CreateBookingCommandRequest()
